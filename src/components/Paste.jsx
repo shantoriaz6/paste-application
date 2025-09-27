@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 const Paste = () => {
   const pastes = useSelector((state) => state.paste.pastes);
   const [searchTerm, setSearchTerm] = useState("");
+  const [openShareId, setOpenShareId] = useState(null);
   const dispatch = useDispatch();
   const filteredData = pastes.filter((paste) =>
     paste.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -28,6 +29,9 @@ const Paste = () => {
       <div className=" flex flex-col gap-5">
         {filteredData.length > 0 &&
           filteredData.map((paste) => {
+            const shareUrl = `${window.location.origin}/pastes/${paste?._id}`;
+            const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=&su=Check%20out%20this%20paste!&body=${encodeURIComponent(shareUrl)}`;
+const whatsappLink = `https://wa.me/?text=${encodeURIComponent("Check out this paste: " + shareUrl)}`;
             return (
               <div
                 className=" border border-spacing-3 border-fuchsia-950 mt-4 p-2 rounded-2xl bg-red-500 "
@@ -54,7 +58,34 @@ const Paste = () => {
                     }}>
                     Copy
                   </button>
-                  <button>Share</button>
+                  <button
+  onClick={() =>
+    setOpenShareId(openShareId === paste?._id ? null : paste?._id)
+  }
+ 
+>
+  Share
+</button>
+{openShareId === paste?._id && (
+  <div className="flex gap-2">
+    <a
+      href={gmailLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="bg-red-600 text-white px-2 py-1 rounded"
+    >
+      Gmail
+    </a>
+    <a
+      href={whatsappLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="bg-green-600 text-white px-2 py-1 rounded"
+    >
+      WhatsApp
+    </a>
+  </div>
+)}
                 </div>
                 <div>{paste.createdAt}</div>
               </div>
