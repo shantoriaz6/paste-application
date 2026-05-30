@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Paste from './components/Paste'
 import ViewPaste from './components/ViewPaste';
 import { RouterProvider } from 'react-router-dom';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 const router=createBrowserRouter(
   [
@@ -48,6 +49,7 @@ function App() {
   return (
    <div>
     <RouterProvider router={router} />
+    <SpeedInsights />
    </div>
       
   )
